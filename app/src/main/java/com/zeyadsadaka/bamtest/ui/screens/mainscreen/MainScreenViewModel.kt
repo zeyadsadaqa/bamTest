@@ -3,6 +3,7 @@ package com.zeyadsadaka.bamtest.ui.screens.mainscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zeyadsadaka.bamtest.repositories.PokemonRepository
+import com.zeyadsadaka.bamtest.repositories.dto.Pokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,4 +43,15 @@ class MainScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun filterPokemons(
+        pokemon: Pokemon,
+        filter: String?,
+    ): Boolean =
+        if (filter.isNullOrBlank() || filter == "All") {
+            true
+        } else {
+            pokemon.name.startsWith(prefix = filter, ignoreCase = true)
+        }
+
 }

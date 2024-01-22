@@ -7,6 +7,8 @@ sealed class Screen(
 
     data object PokemonDetailsScreen : Screen("details_screen")
 
+    data object FilterScreen : Screen("filter_screen")
+
     fun withArgs(vararg args: String) = buildString {
         append(route)
         args.forEach { arg ->

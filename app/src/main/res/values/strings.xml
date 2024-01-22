@@ -6,4 +6,7 @@
     <string name="welcome_lbl">Welcome to our pokemon app</string>
     <string name="pokemons_screen_title">Pokemons</string>
     <string name="abilities_title">Abilities:</string>
+    <string name="filter_title">filter by first letter: </string>
+    <string name="filter_screen_title">Filters </string>
+    <string name="no_pokemons_error">No Pokemons with that filter</string>
 </resources>
