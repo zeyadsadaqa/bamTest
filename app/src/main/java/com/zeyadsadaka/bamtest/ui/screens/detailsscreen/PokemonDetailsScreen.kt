@@ -5,11 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun APIDetailsScreen(
-//    viewModel: ShoppingListDetailsViewModel = hiltViewModel(),
-    categoryName: String,
+fun PokemonDetailsScreen(
+    pokemonName: String,
     navController: NavController,
 ) {
-    Text(text = categoryName)
+    Text(text = pokemonName)
 
 }

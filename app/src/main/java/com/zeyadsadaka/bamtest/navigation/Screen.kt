@@ -5,7 +5,7 @@ sealed class Screen(
 ) {
     data object MainScreen : Screen("main_screen")
 
-    data object APIDetailsScreen : Screen("details_screen")
+    data object PokemonDetailsScreen : Screen("details_screen")
 
     fun withArgs(vararg args: String) = buildString {
         append(route)

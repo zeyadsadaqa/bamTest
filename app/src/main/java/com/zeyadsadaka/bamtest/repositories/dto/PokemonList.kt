@@ -1,6 +1,6 @@
 package com.zeyadsadaka.bamtest.repositories.dto
 
-data class CategoryResponse(
+data class PokemonList(
     val count: Long,
-    val categories: List<String>,
+    val results: List<Pokemon>,
 )

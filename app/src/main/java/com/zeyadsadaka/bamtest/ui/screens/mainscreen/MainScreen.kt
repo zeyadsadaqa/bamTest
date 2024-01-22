@@ -27,6 +27,7 @@ import com.zeyadsadaka.bamtest.ui.components.InitialStateScreen
 import com.zeyadsadaka.bamtest.ui.components.LoadingStateScreen
 import com.zeyadsadaka.bamtest.R
 import com.zeyadsadaka.bamtest.navigation.Screen
+import com.zeyadsadaka.bamtest.repositories.dto.Pokemon
 
 @Composable
 fun MainScreen(
@@ -50,10 +51,10 @@ fun MainScreen(
         is MainScreenUiState.Content -> {
             // Show the list of categories
             ContentStateScreen(
-                categories = (uiState as MainScreenUiState.Content).categories,
-                onCategoryClicked = { categoryName ->
+                pokemons = (uiState as MainScreenUiState.Content).pokemons,
+                onPokemonClicked = { pokemonName ->
                     navController?.navigate(
-                        Screen.APIDetailsScreen.withArgs(categoryName)
+                        Screen.PokemonDetailsScreen.withArgs(pokemonName)
                     )
                 }
             )
@@ -62,7 +63,7 @@ fun MainScreen(
         is MainScreenUiState.Error -> {
             // Show the error message
             ErrorScreen(
-                onButtonClicked = { viewModel.getCategories() }
+                onButtonClicked = { viewModel.getPokemons() }
             )
         }
     }
@@ -73,8 +74,8 @@ fun MainScreen(
 
 @Composable
 fun ContentStateScreen(
-    categories: List<String>,
-    onCategoryClicked: (categoryName: String) -> Unit
+    pokemons: List<Pokemon>,
+    onPokemonClicked: (pokemonName: String) -> Unit
 ) {
     Surface {
         Column(
@@ -86,15 +87,15 @@ fun ContentStateScreen(
                     .padding(16.dp)
                     .fillMaxWidth(),
                 text = stringResource(
-                    id = R.string.category_screen_title
+                    id = R.string.pokemons_screen_title
                 ),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge
             )
             LazyColumn {
-                items(categories.size) { key ->
+                items(pokemons.size) { key ->
                     Text(
-                        text = categories[key],
+                        text = pokemons[key].name,
                         modifier = Modifier
                             .padding(
                                 start = 12.dp,
@@ -103,13 +104,13 @@ fun ContentStateScreen(
                                 bottom = 12.dp,
                             )
                             .clickable {
-                                onCategoryClicked(categories[key])
+                                onPokemonClicked(pokemons[key].name)
                             },
                         style = MaterialTheme.typography.bodyLarge
 
                     )
 
-                    if (key < categories.lastIndex) {
+                    if (key < pokemons.lastIndex) {
                         Divider(
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
@@ -127,16 +128,11 @@ fun ContentStateScreen(
 @Preview
 fun ContentStateScreenPreview() {
     val list = listOf(
-        "Animals",
-        "Anime",
-        "Art and Design",
-        "Patent",
-        "Transportation",
-        "Weather",
+        Pokemon("1"),
     )
     ContentStateScreen(
-        categories = list,
-        onCategoryClicked = {},
+        pokemons = list,
+        onPokemonClicked = {},
     )
 }
 

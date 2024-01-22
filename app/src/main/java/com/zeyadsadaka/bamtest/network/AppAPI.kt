@@ -1,10 +1,10 @@
 package com.zeyadsadaka.bamtest.network
 
-import com.zeyadsadaka.bamtest.repositories.dto.CategoryResponse
+import com.zeyadsadaka.bamtest.repositories.dto.PokemonList
 import retrofit2.Response
 import retrofit2.http.GET
 
 interface AppAPI {
-    @GET("categories")
-    suspend fun getCategories(): Response<CategoryResponse>
+    @GET("pokemon?limit=20")
+    suspend fun getPokemons(): Response<PokemonList>
 }

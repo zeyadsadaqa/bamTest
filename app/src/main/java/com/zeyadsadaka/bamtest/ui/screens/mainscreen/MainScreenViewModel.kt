@@ -2,7 +2,7 @@ package com.zeyadsadaka.bamtest.ui.screens.mainscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zeyadsadaka.bamtest.repositories.CategoryRepository
+import com.zeyadsadaka.bamtest.repositories.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val categoryRepository: CategoryRepository,
+    private val pokemonRepository: PokemonRepository,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MainScreenUiState> =
@@ -20,17 +20,17 @@ class MainScreenViewModel @Inject constructor(
     val uiState: StateFlow<MainScreenUiState> = _uiState.asStateFlow()
 
     init {
-        getCategories()
+        getPokemons()
     }
 
-    fun getCategories() {
+    fun getPokemons() {
         _uiState.value = MainScreenUiState.Loading
         viewModelScope.launch {
             try {
-                val categoriesResult = categoryRepository.getAllRepositories()
-                if (categoriesResult.isSuccessful && categoriesResult.body() != null) {
+                val pokemonResult = pokemonRepository.getAllPokemons()
+                if (pokemonResult.isSuccessful && pokemonResult.body() != null) {
                     _uiState.value =
-                        MainScreenUiState.Content(categoriesResult.body()?.categories!!)
+                        MainScreenUiState.Content(pokemonResult.body()?.results!!)
                 } else {
                     // TODO Add error message or error handler
                     _uiState.value = MainScreenUiState.Error("")

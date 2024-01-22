@@ -3,8 +3,8 @@ package com.zeyadsadaka.bamtest.repositories
 import com.zeyadsadaka.bamtest.network.AppAPI
 import javax.inject.Inject
 
-class CategoryRepositoryImpl @Inject constructor(
+class PokemonRepositoryImpl @Inject constructor(
     private val apiClient: AppAPI
-) : CategoryRepository {
-    override suspend fun getAllRepositories() = apiClient.getCategories()
+) : PokemonRepository {
+    override suspend fun getAllPokemons() = apiClient.getPokemons()
 }

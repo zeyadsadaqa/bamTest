@@ -3,6 +3,6 @@
 
     <string name="error_title">Something went wrong</string>
     <string name="retry_btn_lbl">Retry</string>
-    <string name="welcome_lbl">Welcome to our free APIs app</string>
-    <string name="category_screen_title">API Categories</string>
+    <string name="welcome_lbl">Welcome to our pokemon app</string>
+    <string name="pokemons_screen_title">Pokemons</string>
 </resources>
