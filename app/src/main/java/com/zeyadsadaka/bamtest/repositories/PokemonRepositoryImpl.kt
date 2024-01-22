@@ -7,4 +7,6 @@ class PokemonRepositoryImpl @Inject constructor(
     private val apiClient: AppAPI
 ) : PokemonRepository {
     override suspend fun getAllPokemons() = apiClient.getPokemons()
+    override suspend fun getPokemonDetails(pokemonName: String) =
+        apiClient.getPokemonDetails(pokemonName)
 }

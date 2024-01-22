@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -85,6 +86,12 @@ dependencies {
     //Adding Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi:1.15.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    ksp ("com.github.bumptech.glide:ksp:4.14.2")
 
     //Adding coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")

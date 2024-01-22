@@ -5,4 +5,5 @@
     <string name="retry_btn_lbl">Retry</string>
     <string name="welcome_lbl">Welcome to our pokemon app</string>
     <string name="pokemons_screen_title">Pokemons</string>
+    <string name="abilities_title">Abilities:</string>
 </resources>

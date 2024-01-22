@@ -1,9 +1,10 @@
 package com.zeyadsadaka.bamtest.repositories.dto
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PokemonList(
-    val count: Long,
-    val results: List<Pokemon>,
+data class Sprites(
+    @Json(name = "front_default")
+    val frontDefault: String
 )

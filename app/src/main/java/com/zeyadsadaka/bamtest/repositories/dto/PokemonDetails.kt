@@ -3,7 +3,8 @@ package com.zeyadsadaka.bamtest.repositories.dto
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PokemonList(
-    val count: Long,
-    val results: List<Pokemon>,
+data class PokemonDetails(
+    val abilities: List<AbilityContainer>,
+    val name: String,
+    val sprites: Sprites,
 )

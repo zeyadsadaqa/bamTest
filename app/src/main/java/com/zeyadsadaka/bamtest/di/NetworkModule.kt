@@ -1,5 +1,7 @@
 package com.zeyadsadaka.bamtest.di
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.zeyadsadaka.bamtest.network.AppAPI
 import dagger.Module
 import dagger.Provides
@@ -14,11 +16,19 @@ import javax.inject.Singleton
 class NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(moshi: Moshi): Retrofit {
         return Retrofit
             .Builder()
             .baseUrl("https://pokeapi.co/api/v2/")
-            .addConverterFactory(MoshiConverterFactory.create()).build()
+            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
     }
 
     @Provides
