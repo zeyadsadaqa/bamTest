@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Free APIs</string>
+    <string name="app_name">Pokemons</string>
 
     <string name="error_title">Something went wrong</string>
     <string name="retry_btn_lbl">Retry</string>
