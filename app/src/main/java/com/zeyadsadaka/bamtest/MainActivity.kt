@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.zeyadsadaka.bamtest.ui.screens.mainscreen.MainScreen
+import com.zeyadsadaka.bamtest.navigation.Navigation
 import com.zeyadsadaka.bamtest.ui.theme.BamTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    Navigation()
                 }
             }
         }

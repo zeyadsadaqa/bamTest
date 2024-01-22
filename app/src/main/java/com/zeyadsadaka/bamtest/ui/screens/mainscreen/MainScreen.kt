@@ -1,6 +1,7 @@
 package com.zeyadsadaka.bamtest.ui.screens.mainscreen
 
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,34 +21,45 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.zeyadsadaka.bamtest.ui.components.ErrorScreen
 import com.zeyadsadaka.bamtest.ui.components.InitialStateScreen
 import com.zeyadsadaka.bamtest.ui.components.LoadingStateScreen
-import com.zeyadsadaka.bamtest.ui.states.UiState
 import com.zeyadsadaka.bamtest.R
+import com.zeyadsadaka.bamtest.navigation.Screen
 
 @Composable
-fun MainScreen(viewModel: MainScreenViewModel = hiltViewModel()) {
+fun MainScreen(
+    navController: NavController?,
+    viewModel: MainScreenViewModel = hiltViewModel(),
+) {
 
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState) {
-        UiState.Initial -> {
+        MainScreenUiState.Initial -> {
             // Show Initial screen
             InitialStateScreen()
         }
 
-        UiState.Loading -> {
+        MainScreenUiState.Loading -> {
             // Show loading screen
             LoadingStateScreen()
         }
 
-        is UiState.Content -> {
+        is MainScreenUiState.Content -> {
             // Show the list of categories
-            ContentStateScreen((uiState as UiState.Content).categories)
+            ContentStateScreen(
+                categories = (uiState as MainScreenUiState.Content).categories,
+                onCategoryClicked = { categoryName ->
+                    navController?.navigate(
+                        Screen.APIDetailsScreen.withArgs(categoryName)
+                    )
+                }
+            )
         }
 
-        is UiState.Error -> {
+        is MainScreenUiState.Error -> {
             // Show the error message
             ErrorScreen(
                 onButtonClicked = { viewModel.getCategories() }
@@ -58,8 +70,12 @@ fun MainScreen(viewModel: MainScreenViewModel = hiltViewModel()) {
 
 }
 
+
 @Composable
-fun ContentStateScreen(categories: List<String>) {
+fun ContentStateScreen(
+    categories: List<String>,
+    onCategoryClicked: (categoryName: String) -> Unit
+) {
     Surface {
         Column(
             modifier = Modifier
@@ -79,12 +95,16 @@ fun ContentStateScreen(categories: List<String>) {
                 items(categories.size) { key ->
                     Text(
                         text = categories[key],
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            end = 12.dp,
-                            top = 12.dp,
-                            bottom = 12.dp,
-                        ),
+                        modifier = Modifier
+                            .padding(
+                                start = 12.dp,
+                                end = 12.dp,
+                                top = 12.dp,
+                                bottom = 12.dp,
+                            )
+                            .clickable {
+                                onCategoryClicked(categories[key])
+                            },
                         style = MaterialTheme.typography.bodyLarge
 
                     )
@@ -114,7 +134,10 @@ fun ContentStateScreenPreview() {
         "Transportation",
         "Weather",
     )
-    ContentStateScreen(list)
+    ContentStateScreen(
+        categories = list,
+        onCategoryClicked = {},
+    )
 }
 
 
