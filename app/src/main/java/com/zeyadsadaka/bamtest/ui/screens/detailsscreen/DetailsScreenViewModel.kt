@@ -22,13 +22,13 @@ class DetailsScreenViewModel @Inject constructor(
         _uiState.value = DetailsScreenUiState.Loading
 
         viewModelScope.launch {
-            val pokemonResult =
-                pokemonRepository.getPokemonDetails(pokemonName)
-            if (pokemonResult.isSuccessful) {
-                _uiState.value = DetailsScreenUiState.Content(pokemonResult.body()!!)
-            } else {
-                // TODO Add error message or error handler
-                _uiState.value = DetailsScreenUiState.Error("")
+            try {
+                val pokemonResult =
+                    pokemonRepository.getPokemonDetails(pokemonName)
+
+                _uiState.value = DetailsScreenUiState.Content(pokemonResult)
+            } catch (e: Exception) {
+                _uiState.value = DetailsScreenUiState.Error(e.stackTraceToString())
             }
         }
     }

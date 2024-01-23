@@ -21,6 +21,14 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -100,4 +108,12 @@ dependencies {
     //Adding coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    //Adding room
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt ("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+
 }

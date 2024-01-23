@@ -36,25 +36,16 @@ class MainScreenViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val pokemonResult = pokemonRepository.getAllPokemons()
-                if (pokemonResult.isSuccessful) {
-                    application.dataStore.data.map { preferences ->
-                        preferences[
-                            booleanPreferencesKey("isDarkTheme")
-                        ] ?: false
-                    }.collect { isDarkTheme ->
-                        pokemonResult.body()?.results?.let {
-                            _uiState.value =
-                                MainScreenUiState.Content(it, isDarkTheme)
-                        } ?: run {
-                            _uiState.value = MainScreenUiState.Error("")
-                        }
+                application.dataStore.data.map { preferences ->
+                    preferences[
+                        booleanPreferencesKey("isDarkTheme")
+                    ] ?: false
+                }.collect { isDarkTheme ->
+                    pokemonResult.results.let {
+                        _uiState.value =
+                            MainScreenUiState.Content(it, isDarkTheme)
                     }
-                } else {
-                    // TODO Add error message or error handler
-                    _uiState.value = MainScreenUiState.Error("")
                 }
-
-
             } catch (e: Exception) {
                 _uiState.value = MainScreenUiState.Error(e.stackTraceToString())
             }
