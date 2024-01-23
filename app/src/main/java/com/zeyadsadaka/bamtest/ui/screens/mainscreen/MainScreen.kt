@@ -89,7 +89,7 @@ fun MainScreen(
                         )
                     },
                     onSwitchChangeListener = {
-                        viewModel.saveIsDarkTheme(it, context)
+                        viewModel.saveIsDarkTheme(it)
                     },
                     isDarkMode = (uiState as MainScreenUiState.Content).isDarkMode,
                 )

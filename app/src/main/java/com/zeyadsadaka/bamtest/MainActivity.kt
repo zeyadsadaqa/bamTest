@@ -1,6 +1,5 @@
 package com.zeyadsadaka.bamtest
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,31 +10,33 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import com.zeyadsadaka.bamtest.database.KeyValueConstants
+import com.zeyadsadaka.bamtest.database.KeyValueStore
 import com.zeyadsadaka.bamtest.navigation.Navigation
 import com.zeyadsadaka.bamtest.ui.theme.BamTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var keyValueStore: KeyValueStore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isDarkTheme: Flow<Boolean?> = this.dataStore.data.map { preferences ->
-            preferences[
-                booleanPreferencesKey("isDarkTheme")
-            ]
-        }
+
+        val isDarkTheme: Flow<Boolean?> = keyValueStore
+            .getBooleanFlow(
+                KeyValueConstants.IS_DARK_THEME_KEY
+            )
+
         setContent {
             val darkTheme by isDarkTheme.collectAsState(initial = null)
-            BamTestTheme (
-                darkTheme = darkTheme?:isSystemInDarkTheme()
-            ){
+            BamTestTheme(
+                darkTheme = darkTheme ?: isSystemInDarkTheme()
+            ) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
