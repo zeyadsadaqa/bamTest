@@ -98,6 +98,6 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     //Adding coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }

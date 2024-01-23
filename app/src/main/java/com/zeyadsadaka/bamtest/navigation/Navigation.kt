@@ -29,7 +29,6 @@ fun Navigation() {
         ) { entry ->
             PokemonDetailsScreen(
                 pokemonName = entry.arguments?.getString("pokemonName") ?: "",
-                navController = navController,
             )
         }
 

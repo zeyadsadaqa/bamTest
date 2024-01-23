@@ -38,7 +38,6 @@ import com.zeyadsadaka.bamtest.R
 fun PokemonDetailsScreen(
     viewModel: DetailsScreenViewModel = hiltViewModel(),
     pokemonName: String,
-    navController: NavController,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
