@@ -1,6 +1,6 @@
 package com.zeyadsadaka.bamtest.ui.screens.mainscreen
 
-
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,14 +9,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -60,6 +67,7 @@ fun MainScreen(
         }
 
         is MainScreenUiState.Content -> {
+            val context = LocalContext.current
             // Show the list of pokemons
             ContentStateScreen(
                 pokemons = (uiState as MainScreenUiState.Content).pokemons.filter {
@@ -77,7 +85,11 @@ fun MainScreen(
                             .setLaunchSingleTop(true)
                             .build()
                     )
-                }
+                },
+                onSwitchChangeListener = {
+                    viewModel.saveIsDarkTheme(it, context)
+                },
+                isDarkMode = (uiState as MainScreenUiState.Content).isDarkMode,
             )
         }
 
@@ -88,8 +100,6 @@ fun MainScreen(
             )
         }
     }
-
-
 }
 
 
@@ -98,6 +108,8 @@ fun ContentStateScreen(
     pokemons: List<Pokemon>,
     onPokemonClicked: (pokemonName: String) -> Unit,
     onFilterClicked: () -> Unit,
+    onSwitchChangeListener: (isDarkMode: Boolean) -> Unit,
+    isDarkMode: Boolean,
 ) {
     Surface {
         Column(
@@ -114,7 +126,11 @@ fun ContentStateScreen(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge
             )
-            ConfigurationHeader(onFilterClicked)
+            ConfigurationHeader(
+                onFilterClicked = onFilterClicked,
+                onSwitchChangeListener = onSwitchChangeListener,
+                isDarkMode = isDarkMode,
+            )
             if (pokemons.isNotEmpty()) {
                 LazyColumn {
                     items(pokemons.size) { key ->
@@ -157,16 +173,42 @@ fun ContentStateScreenPreview() {
         pokemons = list,
         onPokemonClicked = {},
         onFilterClicked = {},
+        onSwitchChangeListener = {},
+        isDarkMode = false,
     )
 }
 
 @Composable
-fun ConfigurationHeader(onFilterClicked: () -> Unit) {
+fun ConfigurationHeader(
+    isDarkMode: Boolean,
+    onFilterClicked: () -> Unit,
+    onSwitchChangeListener: (isDarkMode: Boolean) -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, bottom = 8.dp)
+            .padding(
+                start = 4.dp, end = 4.dp, top = 8.dp, bottom = 8.dp
+            )
+            .background(
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                shape = RoundedCornerShape(4.dp)
+            ),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
+        Text(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+            text = stringResource(id = R.string.dark_mode_lbl),
+        )
+
+        var checked by remember { mutableStateOf(isDarkMode) }
+        Switch(
+            checked = checked,
+            onCheckedChange = {
+                checked = it
+                onSwitchChangeListener(it)
+            }
+        )
         Spacer(modifier = Modifier.weight(0.75f))
 
         val annotatedText = buildAnnotatedString {
@@ -208,7 +250,11 @@ fun ConfigurationHeader(onFilterClicked: () -> Unit) {
 @Preview
 @Composable
 fun ConfigurationHeaderPreview() {
-    ConfigurationHeader(onFilterClicked = {})
+    ConfigurationHeader(
+        isDarkMode = false,
+        onFilterClicked = {},
+        onSwitchChangeListener = {}
+    )
 }
 
 

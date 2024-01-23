@@ -90,8 +90,12 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
 
+    //Adding Glide
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     ksp ("com.github.bumptech.glide:ksp:4.14.2")
+
+    //Adding Data Store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     //Adding coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")

@@ -9,4 +9,5 @@
     <string name="filter_title">filter by first letter: </string>
     <string name="filter_screen_title">Filters </string>
     <string name="no_pokemons_error">No Pokemons with that filter</string>
+    <string name="dark_mode_lbl">Dark Mode</string>
 </resources>
