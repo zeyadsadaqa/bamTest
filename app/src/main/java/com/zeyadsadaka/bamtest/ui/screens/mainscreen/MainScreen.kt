@@ -69,28 +69,31 @@ fun MainScreen(
         is MainScreenUiState.Content -> {
             val context = LocalContext.current
             // Show the list of pokemons
-            ContentStateScreen(
-                pokemons = (uiState as MainScreenUiState.Content).pokemons.filter {
-                    viewModel.filterPokemons(it, filter?.value)
-                },
-                onPokemonClicked = { pokemonName ->
-                    navController?.navigate(
-                        Screen.PokemonDetailsScreen.withArgs(pokemonName)
-                    )
-                },
-                onFilterClicked = {
-                    navController?.navigate(
-                        Screen.FilterScreen.route,
-                        NavOptions.Builder()
-                            .setLaunchSingleTop(true)
-                            .build()
-                    )
-                },
-                onSwitchChangeListener = {
-                    viewModel.saveIsDarkTheme(it, context)
-                },
-                isDarkMode = (uiState as MainScreenUiState.Content).isDarkMode,
-            )
+            if (filter != null) {
+                ContentStateScreen(
+                    pokemons = (uiState as MainScreenUiState.Content).pokemons.filter {
+                        viewModel.filterPokemons(it, filter.value)
+                    },
+                    filter = filter.collectAsState().value,
+                    onPokemonClicked = { pokemonName ->
+                        navController.navigate(
+                            Screen.PokemonDetailsScreen.withArgs(pokemonName)
+                        )
+                    },
+                    onFilterClicked = {
+                        navController.navigate(
+                            Screen.FilterScreen.route,
+                            NavOptions.Builder()
+                                .setLaunchSingleTop(true)
+                                .build()
+                        )
+                    },
+                    onSwitchChangeListener = {
+                        viewModel.saveIsDarkTheme(it, context)
+                    },
+                    isDarkMode = (uiState as MainScreenUiState.Content).isDarkMode,
+                )
+            }
         }
 
         is MainScreenUiState.Error -> {
@@ -106,10 +109,11 @@ fun MainScreen(
 @Composable
 fun ContentStateScreen(
     pokemons: List<Pokemon>,
+    isDarkMode: Boolean,
+    filter: String,
     onPokemonClicked: (pokemonName: String) -> Unit,
     onFilterClicked: () -> Unit,
     onSwitchChangeListener: (isDarkMode: Boolean) -> Unit,
-    isDarkMode: Boolean,
 ) {
     Surface {
         Column(
@@ -130,6 +134,7 @@ fun ContentStateScreen(
                 onFilterClicked = onFilterClicked,
                 onSwitchChangeListener = onSwitchChangeListener,
                 isDarkMode = isDarkMode,
+                filter = filter,
             )
             if (pokemons.isNotEmpty()) {
                 LazyColumn {
@@ -175,12 +180,14 @@ fun ContentStateScreenPreview() {
         onFilterClicked = {},
         onSwitchChangeListener = {},
         isDarkMode = false,
+        filter = "All"
     )
 }
 
 @Composable
 fun ConfigurationHeader(
     isDarkMode: Boolean,
+    filter: String,
     onFilterClicked: () -> Unit,
     onSwitchChangeListener: (isDarkMode: Boolean) -> Unit,
 ) {
@@ -231,7 +238,7 @@ fun ConfigurationHeader(
                     textDecoration = TextDecoration.Underline
                 )
             ) {
-                append("All")
+                append(filter)
             }
             pop()
         }
@@ -252,8 +259,9 @@ fun ConfigurationHeader(
 fun ConfigurationHeaderPreview() {
     ConfigurationHeader(
         isDarkMode = false,
+        filter = "All",
         onFilterClicked = {},
-        onSwitchChangeListener = {}
+        onSwitchChangeListener = {},
     )
 }
 
