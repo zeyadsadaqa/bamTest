@@ -1,8 +1,8 @@
 package com.zeyadsadaka.bamtest.di
 
 import android.app.Application
-import com.zeyadsadaka.bamtest.database.KeyValueStore
-import com.zeyadsadaka.bamtest.database.KeyValueStoreImpl
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueStore
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueStoreImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ class KeyValueStoreModule {
     @Provides
     fun provideKeyStore(
         application: Application,
-    ): KeyValueStore {
-        return KeyValueStoreImpl(application)
-    }
+    ): KeyValueStore =
+        KeyValueStoreImpl(application)
+
 }

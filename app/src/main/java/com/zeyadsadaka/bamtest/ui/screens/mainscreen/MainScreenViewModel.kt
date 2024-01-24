@@ -2,8 +2,8 @@ package com.zeyadsadaka.bamtest.ui.screens.mainscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zeyadsadaka.bamtest.database.KeyValueConstants
-import com.zeyadsadaka.bamtest.database.KeyValueStore
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueConstants
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueStore
 import com.zeyadsadaka.bamtest.repositories.PokemonRepository
 import com.zeyadsadaka.bamtest.repositories.dto.Pokemon
 import dagger.hilt.android.lifecycle.HiltViewModel

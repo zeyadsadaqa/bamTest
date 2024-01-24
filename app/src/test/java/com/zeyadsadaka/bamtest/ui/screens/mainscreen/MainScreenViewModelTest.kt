@@ -1,7 +1,7 @@
 package com.zeyadsadaka.bamtest.ui.screens.mainscreen
 
-import com.zeyadsadaka.bamtest.database.KeyValueConstants
-import com.zeyadsadaka.bamtest.database.KeyValueStore
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueConstants
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueStore
 import com.zeyadsadaka.bamtest.network.APIException
 import com.zeyadsadaka.bamtest.repositories.PokemonRepository
 import com.zeyadsadaka.bamtest.repositories.dto.Pokemon
@@ -96,7 +96,6 @@ class MainScreenViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test(expected = APIException::class)
     fun getPokemons_whenRepositoryFails_shouldUpdateUiState() = runTest {
-
 
         given(mockPokemonRepository)
             .willAnswer { throw APIException() }

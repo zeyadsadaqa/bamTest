@@ -1,7 +1,6 @@
 package com.zeyadsadaka.bamtest.repositories
 
-import com.zeyadsadaka.bamtest.database.PokemonDB
-import com.zeyadsadaka.bamtest.database.PokemonEntityAdapter
+import com.zeyadsadaka.bamtest.database.PokemonDatabase
 import com.zeyadsadaka.bamtest.network.APIException
 import com.zeyadsadaka.bamtest.network.AppAPI
 import com.zeyadsadaka.bamtest.repositories.dto.PokemonDetails
@@ -11,24 +10,19 @@ import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
     private val apiClient: AppAPI,
-    private val pokemonDB: PokemonDB,
-    private val pokemonEntityAdapter: PokemonEntityAdapter,
+    private val pokemonDatabase: PokemonDatabase,
 ) : PokemonRepository {
     override suspend fun getAllPokemons(): PokemonList {
         try {
             val pokemonList = apiClient.getPokemons()
             if (pokemonList.isSuccessful && pokemonList.body() != null) {
-                pokemonDB.pokemonDao()
-                    .insertAllPokemons(
-                        pokemonEntityAdapter
-                            .toPokemonEntityList(pokemonList.body()?.results)
-                    )
+                pokemonDatabase.insertAllPokemons(pokemonList.body()?.results)
                 return pokemonList.body()!!
             } else {
                 throw APIException()
             }
         } catch (e: UnknownHostException) {
-            return pokemonEntityAdapter.toPokemonList(pokemonDB.pokemonDao().getAllPokemons())
+            return pokemonDatabase.getAllPokemons()
         } catch (e: Exception) {
             throw APIException()
         }
@@ -42,11 +36,7 @@ class PokemonRepositoryImpl @Inject constructor(
                 apiClient.getPokemonDetails(pokemonName)
             if (pokemonDetailsResponse.isSuccessful) {
                 pokemonDetailsResponse.body()?.let {
-                    pokemonDB
-                        .pokemonDao()
-                        .insertPokemon(
-                            pokemonEntityAdapter.toPokemonEntity(it)
-                        )
+                    pokemonDatabase.insertPokemon(it)
                     return it
                 } ?: run {
                     throw APIException()
@@ -56,11 +46,10 @@ class PokemonRepositoryImpl @Inject constructor(
             }
 
         } catch (_: UnknownHostException) {
-            return pokemonEntityAdapter.toPokemonDetails(
-                pokemonDB.pokemonDao().getPokemon(pokemonName)
-            )
+            return pokemonDatabase.getPokemon(pokemonName)
         } catch (_: Exception) {
             throw APIException()
         }
     }
+
 }

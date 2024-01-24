@@ -10,8 +10,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.zeyadsadaka.bamtest.database.KeyValueConstants
-import com.zeyadsadaka.bamtest.database.KeyValueStore
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueConstants
+import com.zeyadsadaka.bamtest.database.keyvalue.KeyValueStore
 import com.zeyadsadaka.bamtest.navigation.Navigation
 import com.zeyadsadaka.bamtest.ui.theme.BamTestTheme
 import dagger.hilt.android.AndroidEntryPoint
